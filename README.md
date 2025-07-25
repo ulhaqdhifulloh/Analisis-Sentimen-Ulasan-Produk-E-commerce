@@ -3,6 +3,17 @@
 
 ---
 
+![Preview Dashboard](preview_dashboard.png)
+
+---
+
+### Coba Dashboard Online
+
+Dashboard ini juga tersedia secara online di Streamlit Cloud:
+👉 [https://sentimen-ulasan-barang-tokopedia.streamlit.app/](https://sentimen-ulasan-barang-tokopedia.streamlit.app/)
+
+---
+
 ### Disusun Oleh:
 - Falah Razan Hibrizi
 - Siti Nur Khaliza
