@@ -1,10 +1,6 @@
 streamlit
-torch
-transformers
 pandas
 numpy
 scikit-learn
 plotly
-datasets
-xgboost
-safetensors
+joblib

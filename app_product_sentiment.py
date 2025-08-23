@@ -57,8 +57,8 @@ st.markdown("""
 
 def load_vectorizer_and_encoder():
     try:
-        vectorizer = joblib.load("Load Model XGBOOST/tfidf_vectorizer.pkl")
-        label_encoder = joblib.load("Load Model XGBOOST/label_encoder.pkl")
+        vectorizer = joblib.load("logreg_product_sentiment_model/vectorizer.pkl")
+        label_encoder = joblib.load("logreg_product_sentiment_model/label_encoder.pkl")
         return vectorizer, label_encoder
     except Exception as e:
         st.error(f"Error loading vectorizer/encoder: {str(e)}")
@@ -72,7 +72,7 @@ def load_xgb_model(model_path):
             model = pickle.load(f)
         return model
     except Exception as e:
-        st.error(f"Error loading XGBoost model: {str(e)}")
+        st.error(f"Error loading Logistic Regression model: {str(e)}")
         return None
 
 def predict_sentiment(text, vectorizer, model, label_encoder):
@@ -134,11 +134,11 @@ def display_sentiment_result(sentiment, confidence):
         """, unsafe_allow_html=True)
 
 def main():
-    st.markdown('<a href="https://sentimen-ulasan-tokopedia.streamlit.app/" target="_blank" style="text-decoration:none;"><button style="background-color:#1f77b4;color:white;padding:10px 20px;border:none;border-radius:5px;font-size:1.1rem;margin-bottom:20px;">Coba versi Deep Learning IndoBERT di sini</button></a>', unsafe_allow_html=True)
+    # st.markdown('<a href="https://sentimen-ulasan-tokopedia.streamlit.app/" target="_blank" style="text-decoration:none;"><button style="background-color:#1f77b4;color:white;padding:10px 20px;border:none;border-radius:5px;font-size:1.1rem;margin-bottom:20px;">Coba versi Deep Learning IndoBERT di sini</button></a>', unsafe_allow_html=True)
     st.markdown('<h1 class="main-header">🛍️ Tokopedia Review Sentiment Analysis</h1>', 
                 unsafe_allow_html=True)
     st.markdown("""
-    Aplikasi ini menggunakan pipeline **TFIDF + Model Utama** yang telah dilatih untuk menganalisis sentiment 
+    Aplikasi ini menggunakan pipeline **TFIDF + Model ML (Logistic Regression)** yang telah dilatih untuk menganalisis sentiment 
     dari review produk Tokopedia. Masukkan review Anda dan dapatkan analisis sentiment secara real-time!
     """)
 
@@ -160,7 +160,7 @@ def main():
         model = pickle.load(uploaded_model)
         model_status = "Model hasil upload"
     else:
-        model = load_xgb_model("Load Model XGBOOST/xgb_sentiment_model.pkl")
+        model = load_xgb_model("logreg_product_sentiment_model/model.pkl")
         model_status = "Model default bawaan"
     if model is None:
         st.error("Failed to load model utama.")
@@ -170,7 +170,7 @@ def main():
     # Sidebar info
     st.sidebar.header("📋 About the Model")
     st.sidebar.info("""
-    **Pipeline:** TFIDF + Model Utama + LabelEncoder
+    **Pipeline:** TFIDF + Model ML (logreg) + LabelEncoder
     **Task:** Sentiment Classification
     **Classes:** 
     - 😞 Negative (Rating 1-2)
@@ -242,17 +242,14 @@ def main():
     # Statistics section (optional)
     if st.checkbox("Show Model Performance Stats"):
         st.subheader("📊 Model Performance")
-        performance_data = {
-            'Metric': ['Accuracy', 'Precision (Positive)', 'Recall (Positive)', 'F1-Score (Positive)'],
-            'Score': [0.85, 0.87, 0.83, 0.85]  # Replace with your actual metrics
-        }
-        perf_df = pd.DataFrame(performance_data)
-        import plotly.express as px
-        fig_perf = px.bar(perf_df, x='Metric', y='Score', 
-                         title="Model Performance Metrics",
-                         color='Score',
-                         color_continuous_scale='Viridis')
-        st.plotly_chart(fig_perf, use_container_width=True)
+        
+        # Display model evaluation metrics
+        st.subheader("📈 Model Evaluation Metrics")
+        st.image("image/model_evaluation.png", width=600, caption="Model Evaluation Results")
+        
+        # Display confusion matrix
+        st.subheader("🎯 Confusion Matrix")
+        st.image("image/confusion_matrix.png", width=600, caption="Confusion Matrix Visualization")
 
 if __name__ == "__main__":
     main()
