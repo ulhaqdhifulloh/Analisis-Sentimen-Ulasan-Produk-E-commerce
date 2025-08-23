@@ -3,7 +3,7 @@
 
 ---
 
-![Preview Dashboard](preview_dashboard.png)
+![Preview Dashboard](image/preview_dashboard.png)
 
 ---
 
